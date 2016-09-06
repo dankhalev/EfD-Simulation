@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:element name="simulation">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="robot" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:attribute name="class" type="xs:string" use="required"/>
+                        <xs:attribute name="posX" type="xs:double" use="required"/>
+                        <xs:attribute name="posY" type="xs:double" use="required"/>
+                        <xs:attribute name="angle" type="xs:double" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="sizeX" type="xs:integer" use="required"/>
+            <xs:attribute name="sizeY" type="xs:integer" use="required"/>
+            <xs:attribute name="cycles" type="xs:integer" use="required"/>
+            <xs:attribute name="logfile" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
+
+
+
+
+
+
+
+
+
+
+
+

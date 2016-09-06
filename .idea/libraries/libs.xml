@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="libs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/cloning-1.9.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jdeeco.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/objenesis-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/org.eclipse.emf.common-2.9.0-v20130528-0742.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/org.eclipse.emf.ecore.xmi-2.9.0-v20130528-0742.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/org.eclipse.emf.ecore-2.9.0-v20130528-0742.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

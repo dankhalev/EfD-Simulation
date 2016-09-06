@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="libs">
+    <archive path="E:/Workshop/Workspace/EfD Simulation/libs/cloning-1.9.0.jar" />
+    <archive path="E:/Workshop/Workspace/EfD Simulation/libs/jdeeco.jar" />
+    <archive path="E:/Workshop/Workspace/EfD Simulation/libs/objenesis-1.2.jar" />
+    <archive path="E:/Workshop/Workspace/EfD Simulation/libs/org.eclipse.emf.common-2.9.0-v20130528-0742.jar" />
+    <archive path="E:/Workshop/Workspace/EfD Simulation/libs/org.eclipse.emf.ecore.xmi-2.9.0-v20130528-0742.jar" />
+    <archive path="E:/Workshop/Workspace/EfD Simulation/libs/org.eclipse.emf.ecore-2.9.0-v20130528-0742.jar" />
+  </library>
+</eclipse-userlibraries>
+
