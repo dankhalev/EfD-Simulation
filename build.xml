@@ -2,7 +2,6 @@
 <project name="efd_simulation" default="all">
   
   
-  <property file="build.properties"/>
   <!-- Uncomment the following property if no tests compilation is needed -->
   <!-- 
   <property name="skip.tests" value="true"/>
@@ -56,41 +55,6 @@
     <exclude name="**/?*.aj"/>
   </patternset>
   
-  <!-- JDK definitions -->
-  
-  <property name="jdk.bin.1.8" value="${jdk.home.1.8}/bin"/>
-  <path id="jdk.classpath.1.8">
-    <fileset dir="${jdk.home.1.8}">
-      <include name="jre/lib/charsets.jar"/>
-      <include name="jre/lib/deploy.jar"/>
-      <include name="jre/lib/ext/access-bridge-64.jar"/>
-      <include name="jre/lib/ext/cldrdata.jar"/>
-      <include name="jre/lib/ext/dnsns.jar"/>
-      <include name="jre/lib/ext/jaccess.jar"/>
-      <include name="jre/lib/ext/jfxrt.jar"/>
-      <include name="jre/lib/ext/localedata.jar"/>
-      <include name="jre/lib/ext/nashorn.jar"/>
-      <include name="jre/lib/ext/sunec.jar"/>
-      <include name="jre/lib/ext/sunjce_provider.jar"/>
-      <include name="jre/lib/ext/sunmscapi.jar"/>
-      <include name="jre/lib/ext/sunpkcs11.jar"/>
-      <include name="jre/lib/ext/zipfs.jar"/>
-      <include name="jre/lib/javaws.jar"/>
-      <include name="jre/lib/jce.jar"/>
-      <include name="jre/lib/jfr.jar"/>
-      <include name="jre/lib/jfxswt.jar"/>
-      <include name="jre/lib/jsse.jar"/>
-      <include name="jre/lib/management-agent.jar"/>
-      <include name="jre/lib/plugin.jar"/>
-      <include name="jre/lib/resources.jar"/>
-      <include name="jre/lib/rt.jar"/>
-    </fileset>
-  </path>
-  
-  <property name="project.jdk.home" value="${jdk.home.1.8}"/>
-  <property name="project.jdk.bin" value="${jdk.bin.1.8}"/>
-  <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
-  
   
   <!-- Project Libraries -->
   
@@ -103,6 +67,9 @@
     <pathelement location="${basedir}/libs/org.eclipse.emf.ecore.xmi-2.9.0-v20130528-0742.jar"/>
   </path>
   
+  
+  <!-- Global Libraries -->
+  
   <!-- Modules -->
   
   
@@ -111,9 +78,6 @@
   <dirname property="module.efd_simulation.basedir" file="${ant.file}"/>
   
   
-  <property name="module.jdk.home.efd_simulation" value="${project.jdk.home}"/>
-  <property name="module.jdk.bin.efd_simulation" value="${project.jdk.bin}"/>
-  <property name="module.jdk.classpath.efd_simulation" value="${project.jdk.classpath}"/>
   
   <property name="compiler.args.efd_simulation" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
   
@@ -125,7 +89,6 @@
   </path>
   
   <path id="efd_simulation.module.production.classpath">
-    <path refid="${module.jdk.classpath.efd_simulation}"/>
     <path refid="library.libs.classpath"/>
   </path>
   
@@ -135,7 +98,6 @@
   </path>
   
   <path id="efd_simulation.module.classpath">
-    <path refid="${module.jdk.classpath.efd_simulation}"/>
     <pathelement location="${efd_simulation.output.dir}"/>
     <path refid="library.libs.classpath"/>
   </path>
@@ -166,7 +128,7 @@
   
   <target name="compile.module.efd_simulation.production" description="Compile module EfD Simulation; production classes">
     <mkdir dir="${efd_simulation.output.dir}"/>
-    <javac destdir="${efd_simulation.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.efd_simulation}/javac">
+    <javac destdir="${efd_simulation.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
       <compilerarg line="${compiler.args.efd_simulation}"/>
       <bootclasspath refid="efd_simulation.module.bootclasspath"/>
       <classpath refid="efd_simulation.module.production.classpath"/>
@@ -211,5 +173,5 @@
       <classpath refid="mycp"/>
     </java>
   </target>
-
+  
 </project>
