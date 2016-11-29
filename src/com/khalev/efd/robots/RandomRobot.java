@@ -1,6 +1,7 @@
-package com.khalev;
+package com.khalev.efd.robots;
 
 
+import com.khalev.efd.simulation.*;
 import cz.cuni.mff.d3s.deeco.annotations.*;
 import cz.cuni.mff.d3s.deeco.annotations.Process;
 import cz.cuni.mff.d3s.deeco.task.ParamHolder;
@@ -36,18 +37,15 @@ public class RandomRobot extends DEECoRobot {
             wheels.value.speed = 0.0;
             wheels.value.rotationAngle = Math.PI * Math.random();
             count.value++;
-            //System.out.println("Robot: " + rid + " Cycle: " + cycle + " Count " + count.value + " Decision: ROTATE");
         } else if (!cycle.equals(count.value)) {
-            if (Math.random() < 0.98) {
+            if (Math.random() < 0.998) {
                 wheels.value.speed = 1.0 * Math.random();
                 wheels.value.rotationAngle = 0.0;
                 count.value++;
-                //System.out.println("Robot: " + rid + " Cycle: " + cycle + " Count " + count.value + " Decision: MOVE");
             } else {
                 wheels.value.speed = 0.0;
                 wheels.value.rotationAngle = Math.PI * Math.random();
                 count.value++;
-                //System.out.println("Robot: " + rid + " Cycle: " + cycle + " Count " + count.value + " Decision: ROTATE");
             }
         }
 
@@ -55,7 +53,7 @@ public class RandomRobot extends DEECoRobot {
 
 
 
-    class CollisionSensor implements com.khalev.CollisionSensor {
+    class CollisionSensor implements com.khalev.efd.simulation.CollisionSensor {
         ArrayList<Double> collisionPoints = new ArrayList<>();
 
         public void receiveSpatialInput(SpatialInput input) {
@@ -77,7 +75,7 @@ public class RandomRobot extends DEECoRobot {
 
     }
 
-    class Wheels implements com.khalev.Wheels {
+    class Wheels implements com.khalev.efd.simulation.Wheels {
         public static final double MAX_SPEED = 1.0;
         double rotationAngle = 0.0;
         double speed = 1.0;

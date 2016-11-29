@@ -1,5 +1,6 @@
-package com.khalev;
+package com.khalev.efd.robots;
 
+import com.khalev.efd.simulation.*;
 import cz.cuni.mff.d3s.deeco.annotations.*;
 import cz.cuni.mff.d3s.deeco.annotations.Process;
 import cz.cuni.mff.d3s.deeco.task.ParamHolder;
@@ -45,7 +46,7 @@ public class OrtogonalRobot extends DEECoRobot {
 
 
 
-    class CollisionSensor implements com.khalev.CollisionSensor {
+    class CollisionSensor implements com.khalev.efd.simulation.CollisionSensor {
         ArrayList<Double> collisionPoints = new ArrayList<>();
 
         public void receiveSpatialInput(SpatialInput input) {
@@ -67,7 +68,7 @@ public class OrtogonalRobot extends DEECoRobot {
 
     }
 
-    class Wheels implements com.khalev.Wheels {
+    class Wheels implements com.khalev.efd.simulation.Wheels {
         public static final double MAX_SPEED = 1.0;
         double rotationAngle = 0.0;
         double speed = 1.0;

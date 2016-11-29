@@ -1,5 +1,6 @@
-package com.khalev;
+package com.khalev.efd.robots;
 
+import com.khalev.efd.simulation.*;
 import cz.cuni.mff.d3s.deeco.annotations.*;
 import cz.cuni.mff.d3s.deeco.annotations.Process;
 import cz.cuni.mff.d3s.deeco.task.ParamHolder;
@@ -34,19 +35,17 @@ public class SimpleRobot extends DEECoRobot {
             wheels.value.speed = 0.0;
             wheels.value.rotationAngle = Math.PI;
             count.value++;
-            //System.out.println("Robot: " + rid + " Cycle: " + cycle + " Count " + count.value + " Decision: ROTATE");
         } else if (!cycle.equals(count.value)) {
             wheels.value.speed = 1.0;
             wheels.value.rotationAngle = 0.0;
             count.value++;
-            //System.out.println("Robot: " + rid + " Cycle: " + cycle + " Count " + count.value + " Decision: MOVE");
         }
 
     }
 
 
 
-    class CollisionSensor implements com.khalev.CollisionSensor {
+    class CollisionSensor implements com.khalev.efd.simulation.CollisionSensor {
         ArrayList<Double> collisionPoints = new ArrayList<>();
 
         public void receiveSpatialInput(SpatialInput input) {
@@ -68,7 +67,7 @@ public class SimpleRobot extends DEECoRobot {
 
     }
 
-    class Wheels implements com.khalev.Wheels {
+    class Wheels implements com.khalev.efd.simulation.Wheels {
         public static final double MAX_SPEED = 1.0;
         double rotationAngle = 0.0;
         double speed = 1.0;

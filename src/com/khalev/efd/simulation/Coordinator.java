@@ -1,4 +1,4 @@
-package com.khalev;
+package com.khalev.efd.simulation;
 
 import cz.cuni.mff.d3s.deeco.annotations.*;
 import cz.cuni.mff.d3s.deeco.annotations.Process;
@@ -56,7 +56,7 @@ public class Coordinator {
             env.actualizedActions = true;
 
             env.cycle();
-            System.out.println("Cycle: " + cycle.value);
+            env.logger.fine("Cycle: " + cycle.value);
             cycle.value++;
             inputs.value = env.returnInputs();
             env.actualizedSpatialInputs = false;
@@ -65,10 +65,10 @@ public class Coordinator {
                 received.value[i] = false;
             }
             phase.value = Phase.SENDING;
-            System.out.println("SENDING PHASE");
+            env.logger.fine("SENDING PHASE");
         } else if (andAll(sent.value) && phase.value != Phase.FETCHING) {
             phase.value = Phase.FETCHING;
-            System.out.println("FETCHING PHASE");
+            Environment.getInstance().logger.fine("FETCHING PHASE");
         }
     }
 

@@ -168,7 +168,7 @@
   </path>
 
   <target name="run" depends="all" description="Executes program">
-    <java fork="true" classname="com.khalev.Main">
+    <java fork="true" classname="com.khalev.efd.simulation.Main">
       <arg value="${arg0}"/>
       <classpath refid="mycp"/>
     </java>

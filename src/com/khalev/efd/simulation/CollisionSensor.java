@@ -1,4 +1,4 @@
-package com.khalev;
+package com.khalev.efd.simulation;
 
 /**
  * Interface that any collision sensor must implement.

@@ -1,4 +1,4 @@
-package com.khalev;
+package com.khalev.efd.simulation;
 
 import cz.cuni.mff.d3s.deeco.annotations.Process;
 import cz.cuni.mff.d3s.deeco.annotations.processor.AnnotationProcessor;
@@ -23,22 +23,19 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-
+//TODO: comment all the public elements in the project
 public class Main {
 
     public static void main(String[] args) throws AnnotationProcessorException, SimulationParametersException {
         if (args.length < 1) {
-            System.out.println("Please provide a name of XML file with simulation properties");
+            throw  new SimulationParametersException("Please provide a name of XML file with simulation properties");
         } else if (!validateAgainstXSD(args[0], "EfDSchema.xsd")) {
             throw  new SimulationParametersException("Specified file does not represent a valid simulation properties file");
         } else {
-            suppressErrors();
             startRuntime(initializeFromXML(args[0]));
         }
 
@@ -100,14 +97,16 @@ public class Main {
             list.add(InputEnsemble.class);
 
             NamedNodeMap nnm = doc.getDocumentElement().getAttributes();
-            int sizeX = Integer.parseInt(nnm.getNamedItem("sizeX").getTextContent());
-            int sizeY = Integer.parseInt(nnm.getNamedItem("sizeY").getTextContent());
             int cycles = Integer.parseInt(nnm.getNamedItem("cycles").getTextContent());
             File logfile = new File(nnm.getNamedItem("logfile").getTextContent());
+            File bitmap = new File(nnm.getNamedItem("bitmap").getTextContent());
 
-            checkParametersForConsistency(robots, sizeX, sizeY, cycles);
+            BitmapProcessor bp = new BitmapProcessor(bitmap);
+            EnvironmentMap map = bp.readBitmap();
 
-            Environment env = new Environment(sizeX, sizeY, cycles, robots, logfile);
+            //checkParametersForConsistency(robots, map, cycles);
+
+            Environment env = new Environment(cycles, robots, logfile, map);
             Environment.setInstance(env);
 
             return list;
@@ -145,41 +144,5 @@ public class Main {
         return false;
     }
 
-    private static void checkParametersForConsistency(ArrayList<RobotPlacement> robots, int sizeX, int sizeY, int cycles) throws SimulationParametersException {
-
-        if (sizeX > 1000 || sizeY > 1000) {
-            throw new SimulationParametersException("The size of simulation can not be bigger than 1000x1000");
-        }
-        if (cycles > 20000) {
-            throw new SimulationParametersException("The number of cycles can not be bigger than 10 000");
-        }
-        if (robots.size() > 30) {
-            throw new SimulationParametersException("You can not create a simulation with more than a 30 robots");
-        }
-
-        for (int i = 0; i < robots.size(); i++) {
-            RobotPlacement r = robots.get(i);
-            if (r.x < Environment.ROBOT_RADIUS || r.x > sizeX - Environment.ROBOT_RADIUS ||
-                    r.y < Environment.ROBOT_RADIUS || r.y > sizeY - Environment.ROBOT_RADIUS) {
-                throw new SimulationParametersException("There was found a collision between the robot #" + (i+1) +
-                        " and the wall. To be consistent, initial parameters of simulation should not contain collisions.");
-            }
-        }
-
-        for (int i = 0; i < robots.size(); i++) {
-            for (int j = 0; j < robots.size(); j++) {
-                if (i != j && Environment.distance(robots.get(i), robots.get(j)) < Environment.DOUBLE_RADIUS_SQUARED)
-                    throw new SimulationParametersException("There was found a collision between robot #" + (i+1) +
-                            " and robot #" + (j+1) + ". To be consistent, initial parameters of simulation should not contain collisions.");
-            }
-        }
-    }
-
-    private static void suppressErrors() {
-        System.setErr(new PrintStream(new OutputStream() {
-            public void write(int b) {
-            }
-        }));
-    }
 
 }

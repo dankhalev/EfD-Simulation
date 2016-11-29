@@ -1,4 +1,4 @@
-package com.khalev;
+package com.khalev.efd.simulation;
 
 /**
  * A template for robots. Each robot in simulation must be descendant of this class.

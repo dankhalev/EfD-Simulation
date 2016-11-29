@@ -12,10 +12,9 @@
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
-            <xs:attribute name="sizeX" type="xs:integer" use="required"/>
-            <xs:attribute name="sizeY" type="xs:integer" use="required"/>
             <xs:attribute name="cycles" type="xs:integer" use="required"/>
             <xs:attribute name="logfile" type="xs:string" use="required"/>
+            <xs:attribute name="bitmap" type="xs:string" use="required"/>
         </xs:complexType>
     </xs:element>
 </xs:schema>

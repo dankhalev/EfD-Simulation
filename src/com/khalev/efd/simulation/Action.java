@@ -1,4 +1,4 @@
-package com.khalev;
+package com.khalev.efd.simulation;
 
 /**
  * This class represents an action that a robot can perform in a cycle of simulation.

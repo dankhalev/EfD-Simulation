@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<simulation cycles="500" logfile="2-4.txt" bitmap="field2.bmp">
+	<robot class="com.khalev.efd.robots.OrtogonalRobot" posX="50.0" posY="50.0" angle="90"/>
+	<robot class="com.khalev.efd.robots.OrtogonalRobot" posX="60.0" posY="50.0" angle="140"/>
+	<robot class="com.khalev.efd.robots.OrtogonalRobot" posX="50.0" posY="60.0" angle="20"/>
+	<robot class="com.khalev.efd.robots.OrtogonalRobot" posX="60.0" posY="60.0" angle="230"/>
+	
+</simulation>

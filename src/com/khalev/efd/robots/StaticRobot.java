@@ -1,5 +1,7 @@
-package com.khalev;
+package com.khalev.efd.robots;
 
+import com.khalev.efd.simulation.DEECoRobot;
+import com.khalev.efd.simulation.Environment;
 import cz.cuni.mff.d3s.deeco.annotations.*;
 import cz.cuni.mff.d3s.deeco.annotations.Process;
 import cz.cuni.mff.d3s.deeco.task.ParamHolder;

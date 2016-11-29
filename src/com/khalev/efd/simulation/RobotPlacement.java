@@ -1,4 +1,4 @@
-package com.khalev;
+package com.khalev.efd.simulation;
 
 /**
  * This class represents a placement of a robot in the environment. Placement consists of robot's coordinates and

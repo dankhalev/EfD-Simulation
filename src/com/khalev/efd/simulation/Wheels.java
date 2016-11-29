@@ -1,4 +1,4 @@
-package com.khalev;
+package com.khalev.efd.simulation;
 
 /**
  * Interface for robot's wheels. Wheels are a part of the robot that signalizes current action to environment.

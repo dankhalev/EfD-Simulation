@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<simulation sizeX="100" sizeY="100" cycles="500" logfile="e:\Workshop\Workspace\2-1.txt">
-	<robot class="com.khalev.SimpleRobot" posX="50.0" posY="95" angle="180"/>
-	<robot class="com.khalev.OrtogonalRobot" posX="50.0" posY="5.0" angle="0"/>
-	<robot class="com.khalev.SimpleRobot" posX="5.0" posY="50" angle="90"/>
-	<robot class="com.khalev.SimpleRobot" posX="95.0" posY="50" angle="-90"/>
-	<robot class="com.khalev.StaticRobot" posX="50.0" posY="50" angle="-45"/>
-	<robot class="com.khalev.SimpleRobot" posX="90.0" posY="15" angle="55"/>
-	<robot class="com.khalev.OrtogonalRobot" posX="70.0" posY="70" angle="70"/>
-	<robot class="com.khalev.OrtogonalRobot" posX="60.0" posY="70" angle="70"/>
-	<robot class="com.khalev.SimpleRobot" posX="10.0" posY="70" angle="130"/>
-	<robot class="com.khalev.OrtogonalRobot" posX="40.0" posY="60" angle="160"/>
-	<robot class="com.khalev.SimpleRobot" posX="70.0" posY="90" angle="70"/>
+<simulation cycles="500" logfile="2-1.txt" bitmap="field.bmp">
+	<robot class="com.khalev.efd.robots.SimpleRobot" posX="50.0" posY="95" angle="180"/>
+	<robot class="com.khalev.efd.robots.OrtogonalRobot" posX="50.0" posY="5.0" angle="0"/>
+	<robot class="com.khalev.efd.robots.SimpleRobot" posX="5.0" posY="50" angle="90"/>
+	<robot class="com.khalev.efd.robots.SimpleRobot" posX="95.0" posY="50" angle="-90"/>
+	<robot class="com.khalev.efd.robots.StaticRobot" posX="50.0" posY="50" angle="-45"/>
+	<robot class="com.khalev.efd.robots.SimpleRobot" posX="90.0" posY="15" angle="55"/>
+	<robot class="com.khalev.efd.robots.OrtogonalRobot" posX="70.0" posY="70" angle="70"/>
+	<robot class="com.khalev.efd.robots.OrtogonalRobot" posX="60.0" posY="70" angle="70"/>
+	<robot class="com.khalev.efd.robots.SimpleRobot" posX="10.0" posY="70" angle="130"/>
+	<robot class="com.khalev.efd.robots.OrtogonalRobot" posX="40.0" posY="60" angle="160"/>
+	<robot class="com.khalev.efd.robots.SimpleRobot" posX="70.0" posY="90" angle="70"/>
 </simulation>
