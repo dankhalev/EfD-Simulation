@@ -12,13 +12,14 @@ public class RobotPlacement {
     public Double y;
     public Double angle;
     public final int id;
+    private static int RID = 0;
 
     public RobotPlacement(DEECoRobot robot, Double x, Double y, Double angle) {
         this.robot = robot;
         this.x = x;
         this.y = y;
         this.angle = angle;
-        this.id = 0;
+        this.id = RID++;
     }
 
     private RobotPlacement(int id) {

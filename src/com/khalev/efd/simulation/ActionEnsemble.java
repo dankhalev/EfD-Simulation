@@ -26,6 +26,7 @@ public class ActionEnsemble {
         return true;
     }
 
+    //TOTRY: switch off "cycle.equals(globalCycle)"
     @KnowledgeExchange
     public static void map(
             @In("coord.phase") Coordinator.Phase phase,

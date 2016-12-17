@@ -7,4 +7,5 @@ import java.util.ArrayList;
  */
 public class SpatialInput {
     public ArrayList<Double> collisionPoints = new ArrayList<>();
+    public double timeOfHit;
 }

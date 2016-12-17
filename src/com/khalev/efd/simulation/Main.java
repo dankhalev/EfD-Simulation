@@ -104,17 +104,16 @@ public class Main {
             BitmapProcessor bp = new BitmapProcessor(bitmap);
             EnvironmentMap map = bp.readBitmap();
 
-            //checkParametersForConsistency(robots, map, cycles);
+            checkParametersForConsistency(robots, map, cycles);
 
-            Environment env = new Environment(cycles, robots, logfile, map);
+            Environment env = new Environment(cycles, robots, logfile, map, bitmap.getAbsolutePath());
             Environment.setInstance(env);
 
             return list;
 
         } catch (SAXException | ParserConfigurationException | IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
     private static DEECoRobot createNewRobot(String classname) throws SimulationParametersException {
@@ -144,5 +143,27 @@ public class Main {
         return false;
     }
 
+    private static void checkParametersForConsistency(ArrayList<RobotPlacement> robots, EnvironmentMap map, int cycles) throws SimulationParametersException {
+
+        if (map.sizeX > 1000 || map.sizeY > 1000) {
+            throw new SimulationParametersException("The size of simulation cannot be bigger than 1000x1000");
+        }
+        if (cycles > 20000) {
+            throw new SimulationParametersException("The number of cycles can not be bigger than 10 000");
+        }
+        if (robots.size() > 30) {
+            throw new SimulationParametersException("You can not create a simulation with more than a 30 robots");
+        }
+
+        Collision collision = SimulationEngine.checkMapConsistency(robots, map);
+        if (collision.type == Collision.Type.WALL) {
+            throw new SimulationParametersException("There was found a collision between the robot #" + (collision.num1+1) +
+                    " and the wall. To be consistent, initial parameters of simulation should not contain collisions.");
+        } else if (collision.type == Collision.Type.ROBOT) {
+            throw new SimulationParametersException("There was found a collision between robot #" + (collision.num1+1) +
+                    " and robot #" + (collision.num2+1) + ". To be consistent, initial parameters of simulation should not contain collisions.");
+        }
+
+    }
 
 }

@@ -53,13 +53,11 @@ public class Coordinator {
             phase.value = Phase.PROCESSING;
             Environment env = Environment.getInstance();
             env.updateActions(actions.value);
-            env.actualizedActions = true;
 
             env.cycle();
             env.logger.fine("Cycle: " + cycle.value);
             cycle.value++;
             inputs.value = env.returnInputs();
-            env.actualizedSpatialInputs = false;
             for (int i = 0; i < numOfRobots; i++) {
                 sent.value[i] = false;
                 received.value[i] = false;

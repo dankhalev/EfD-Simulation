@@ -26,7 +26,7 @@ public class Action {
         } else if (rotation != 0) {
             type = Type.ROTATE;
             this.velocity = 0;
-            angle = Environment.normalizeAngle(rotation);
+            angle = SimulationEngine.normalizeAngle(rotation);
         } else {
             type = Type.STAY;
             this.velocity = 0;
