@@ -13,13 +13,14 @@ import java.util.logging.*;
  */
 public class Environment {
 
-    public static final int CYCLE = 2;
+    public static final int CYCLE = 1;
     private final int STEPS;
 
     private RuntimeFramework runtime;
     private EnvironmentMap environmentMap;
     private SimulationEngine computer;
     private ArrayList<RobotPlacement> robots;
+    private ArrayList<RobotPlacement> previousPositions;
     private ArrayList<Action> actions = new ArrayList<>();
     private ArrayList<SpatialInput> inputs = new ArrayList<>();
 
@@ -27,7 +28,7 @@ public class Environment {
     private int previousStep = -1;
     private FileWriter logfile;
     private long startTime;
-    Logger logger;
+    public Logger logger;
 
     private static Environment instance;
     public static Environment getInstance() {
@@ -106,9 +107,13 @@ public class Environment {
             logger.info("CYCLE " + step);
             assert step == previousStep + 1: "Unknown exception occurred in computations";
             previousStep++;
+
             if (!endCondition()) {
+                previousPositions = robots;
                 robots = computer.performActions(actions);
                 inputs = computer.sendInputs(robots);
+                if (step > 0)
+                    writeRobotLogs();
                 step++;
                 return 0;
             } else {
@@ -127,6 +132,37 @@ public class Environment {
         long endTime = System.nanoTime();
         logger.info("Time elapsed: " + ((endTime - startTime) / 1000000) + " ms");
         logger.info("Approximately " + ((endTime - startTime) / this.STEPS / 1000000) + " ms per cycle");
+    }
+
+    private void writeRobotLogs() {
+        String s = "\n";
+        for (int i = 0; i < previousPositions.size(); i++) {
+            RobotPlacement r = robots.get(i);
+            RobotPlacement rp = previousPositions.get(i);
+            Action act = actions.get(i);
+            SpatialInput in = inputs.get(i);
+
+            s += ("Robot #" + rp.id + " had coordinates " + rp.x + ", " + rp.y + ";\n");
+            if (act.type == Action.Type.MOVE) {
+                s += ("Robot #" + r.id + ": MOVE, " + ((act.degreeOfRealization)*100) + "%\n");
+            } else if (act.type == Action.Type.ROTATE) {
+                s += ("Robot #" + r.id + ": ROTATE, " + (Math.toDegrees(act.angle)) + " degrees\n");
+            } else {
+                s += ("Robot #" + r.id + ": STAY\n");
+            }
+            if (in.collisionPoints.size() == 0) {
+                s += ("Robot #" + r.id + ": no collisions\n");
+            } else {
+                s += ("Robot #" + r.id + ": COLLISIONS AT ");
+                for (double point : in.collisionPoints) {
+                    s += String.format("%.2f", Math.toDegrees(point));
+                    s += ("; ");
+                }
+                s += "\n";
+            }
+            s += ("Robot #" + r.id + " has final coordinates " + r.x + ", " + r.y + ";\n");
+        }
+        logger.finer(s);
     }
 
     private void writeLogs() throws IOException {

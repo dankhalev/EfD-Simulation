@@ -34,7 +34,16 @@ public class Action {
         }
     }
 
-    enum Type {
+    public boolean isIdenticalTo(Action act) {
+
+        if (this.type != act.type || this.angle != act.angle || this.velocity != act.velocity
+                || this.degreeOfRealization != act.degreeOfRealization) {
+            return false;
+        }
+        return true;
+    }
+
+    public enum Type {
         STAY, MOVE, ROTATE
     }
 }

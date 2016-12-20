@@ -19,8 +19,7 @@ public class Coordinator {
     public Boolean[] inputSent;
     public Integer numOfRobots;
 
-    public Integer actTrigger = 0;
-    public Integer inTrigger = 0;
+    public Integer counter = 0;
     public Integer cycle = 0;
 
 
@@ -38,6 +37,7 @@ public class Coordinator {
     }
 
     @Process
+    @PeriodicScheduling(Environment.CYCLE)
     public static void nextCycle(
         @InOut("actions") ParamHolder<Action[]> actions,
         @InOut("actionReceived") ParamHolder<Boolean[]> received,
@@ -45,9 +45,8 @@ public class Coordinator {
         @InOut("inputSent") ParamHolder<Boolean[]> sent,
         @InOut("phase") ParamHolder<Phase> phase,
         @In("numOfRobots") Integer numOfRobots,
-        @TriggerOnChange @In("inTrigger") Integer inTrigger,
-        @TriggerOnChange @In("actTrigger") Integer actTrigger,
-        @InOut("cycle") ParamHolder<Integer> cycle
+        @InOut("cycle") ParamHolder<Integer> cycle,
+        @InOut("counter") ParamHolder<Integer> counter
     ) {
         if (phase.value == Phase.FETCHING && andAll(received.value)) {
             phase.value = Phase.PROCESSING;
@@ -64,13 +63,19 @@ public class Coordinator {
             }
             phase.value = Phase.SENDING;
             env.logger.fine("SENDING PHASE");
-        } else if (andAll(sent.value) && phase.value != Phase.FETCHING) {
-            phase.value = Phase.FETCHING;
-            Environment.getInstance().logger.fine("FETCHING PHASE");
+        } else if (phase.value == Phase.SENDING && andAll(sent.value)) {
+            phase.value = Phase.WAITING;
+            counter.value = 0;
+            Environment.getInstance().logger.fine("WAITING PHASE");
+        } else if (phase.value == Phase.WAITING) {
+            if (counter.value < Main.CYCLE) {
+                counter.value += Environment.CYCLE;
+            } else {
+                phase.value = Phase.FETCHING;
+                Environment.getInstance().logger.fine("FETCHING PHASE");
+            }
         }
     }
-
-
 
     public static boolean andAll(Boolean[] f) {
         for (boolean b : f) {
@@ -81,7 +86,7 @@ public class Coordinator {
     }
 
     enum Phase {
-        FETCHING, PROCESSING, SENDING
+        FETCHING, PROCESSING, SENDING, WAITING
     }
 
 }

@@ -3,6 +3,8 @@ package com.khalev.efd.simulation;
 import javafx.util.Pair;
 import java.util.ArrayList;
 
+import static java.lang.Double.NaN;
+
 //TODO: review ST_ERR method
 //TODO: make a proof that computations work correctly
 class SimulationEngine extends SensoryInputsProcessor {
@@ -10,6 +12,7 @@ class SimulationEngine extends SensoryInputsProcessor {
     private ArrayList<RobotPlacement> robots;
     private EnvironmentMap environmentMap;
     private CollisionList collisionList;
+    private ArrayList<Action> actions;
 
     private static final double ST_ERR = 0.01;
     private static final double ROBOT_RADIUS = 3;
@@ -25,6 +28,7 @@ class SimulationEngine extends SensoryInputsProcessor {
     }
 
     ArrayList<RobotPlacement> performActions(ArrayList<Action> actions) {
+        this.actions = actions;
         // --- Creating a placement list for next step:
         ArrayList<RobotPlacement> next = new ArrayList<>();
         for (RobotPlacement rp : robots) {
@@ -132,15 +136,17 @@ class SimulationEngine extends SensoryInputsProcessor {
                 }
             }
         }
-        robots = next;
-        return robots;
+        this.robots = next;
+
+        return this.robots;
     }
 
     ArrayList<SpatialInput> sendInputs(ArrayList<RobotPlacement> robots) {
+        assert actions.size() == robots.size(): "Actions were not updated";
         ArrayList<SpatialInput> inputs = new ArrayList<>();
 
-        for (RobotPlacement ignored : robots) {
-            inputs.add(new SpatialInput());
+        for (int i = 0; i < robots.size(); i++) {
+            inputs.add(new SpatialInput(actions.get(i)));
         }
 
         collisionList.computeCollisionsWithWalls(robots, inputs);
@@ -204,26 +210,26 @@ class SimulationEngine extends SensoryInputsProcessor {
             assert !startCollision || !endCollision: "Two collision points for static wall collision";
             if (startCollision) {
                 if (line.isVertical) {
-                    return subjectiveAngleBetween(r, line.start, line.horizon);
+                    return subjectiveAngleBetween(r, line.horizon, line.start);
                 }
-                return subjectiveAngleBetween(r, line.horizon, line.start);
+                return subjectiveAngleBetween(r, line.start, line.horizon);
             } else if (endCollision) {
                 if (line.isVertical) {
-                    return subjectiveAngleBetween(r, line.end, line.horizon);
+                    return subjectiveAngleBetween(r, line.horizon, line.end);
                 }
-                return subjectiveAngleBetween(r, line.horizon, line.end);
+                return subjectiveAngleBetween(r, line.end, line.horizon);
             } else {
                 if (line.isVertical) {
-                    return subjectiveAngleBetween(r, r.x, line.horizon);
+                    return subjectiveAngleBetween(r, line.horizon, r.y);
                 }
-                return subjectiveAngleBetween(r, line.horizon, r.y);
+                return subjectiveAngleBetween(r, r.x, line.horizon);
             }
         }
 
         double degree = act.degreeOfRealization;
-        double tx = Double.NaN;
+        double tx = NaN;
         double point = 0;
-        double ts;
+        double ts = NaN;
         //resolving edge collisions:
         if (startCollision) {
             if (line.isVertical) {
@@ -234,7 +240,7 @@ class SimulationEngine extends SensoryInputsProcessor {
             updateCoordinates(r, rp, act, tx);
             //if position is still inconsistent, we can't use this solution:
             if (!checkConsistency(r, line)) {
-                tx = Double.NaN;
+                tx = NaN;
             }
             point = line.start;
         }
@@ -246,7 +252,7 @@ class SimulationEngine extends SensoryInputsProcessor {
             }
             updateCoordinates(r, rp, act, tx);
             if (!checkConsistency(r, line)) {
-                tx = Double.NaN;
+                tx = NaN;
             }
             point = line.end;
         }
@@ -265,7 +271,7 @@ class SimulationEngine extends SensoryInputsProcessor {
             }
         }
         assert tx == tx || ts == ts: "No solution was found for robot-wall collision";
-        assert (tx != tx || ts != ts) || tx < ts: "Impossible state occurred: tx > ts, tx = " + tx + ", ts = " + ts;
+        assert (tx != tx || ts != ts) || tx > ts: "Impossible state occurred: tx < ts, tx = " + tx + ", ts = " + ts;
 
         if (tx == tx) {
             if (line.isVertical) {
@@ -352,7 +358,7 @@ class SimulationEngine extends SensoryInputsProcessor {
         } else if (t2 == t2) {
             return t2;
         } else {
-            return Double.NaN;
+            return NaN;
         }
     }
 
@@ -364,7 +370,7 @@ class SimulationEngine extends SensoryInputsProcessor {
         } else if (t > lowerBound && t < upperBound) {
             return t;
         } else {
-            return Double.NaN;
+            return NaN;
         }
     }
 

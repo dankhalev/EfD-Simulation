@@ -6,8 +6,6 @@ package com.khalev.efd.simulation;
 public class DEECoRobot {
 
     public Integer rID;
-    public Integer simulationTime = 0;
-    public Integer cyclesCounted;
     public CollisionSensor sensor;
     public Wheels wheels;
 
@@ -24,7 +22,6 @@ public class DEECoRobot {
             }
         };
 
-        cyclesCounted = -1;
         wheels = new Wheels() {
             @Override
             public Action sendCurrentAction() {

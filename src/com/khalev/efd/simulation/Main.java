@@ -1,6 +1,5 @@
 package com.khalev.efd.simulation;
 
-import cz.cuni.mff.d3s.deeco.annotations.Process;
 import cz.cuni.mff.d3s.deeco.annotations.processor.AnnotationProcessor;
 import cz.cuni.mff.d3s.deeco.annotations.processor.AnnotationProcessorException;
 import cz.cuni.mff.d3s.deeco.model.runtime.api.RuntimeMetadata;
@@ -23,13 +22,13 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 //TODO: comment all the public elements in the project
 public class Main {
 
+    public static final int CYCLE = 5;
     public static void main(String[] args) throws AnnotationProcessorException, SimulationParametersException {
         if (args.length < 1) {
             throw  new SimulationParametersException("Please provide a name of XML file with simulation properties");
@@ -98,6 +97,7 @@ public class Main {
 
             NamedNodeMap nnm = doc.getDocumentElement().getAttributes();
             int cycles = Integer.parseInt(nnm.getNamedItem("cycles").getTextContent());
+            //CYCLE = Integer.parseInt(nnm.getNamedItem("processingTime").getTextContent());
             File logfile = new File(nnm.getNamedItem("logfile").getTextContent());
             File bitmap = new File(nnm.getNamedItem("bitmap").getTextContent());
 
@@ -123,24 +123,12 @@ public class Main {
             if (!DEECoRobot.class.isAssignableFrom(clazz)) {
                 throw new SimulationParametersException("Class " + classname + " does not extend class DEECoRobot.");
             }
-            if (!hasAtLeastOneProcess(clazz.getMethods())) {
-                throw new SimulationParametersException("Class " + classname + " does not contain any process.");
-            }
             return (DEECoRobot) clazz.newInstance();
         } catch (ClassNotFoundException e) {
             throw new SimulationParametersException("Class " + classname + " does not exist.");
         } catch (InstantiationException | IllegalAccessException e) {
             throw new SimulationParametersException("Class " + classname + " is not valid class.");
         }
-    }
-
-    private static boolean hasAtLeastOneProcess(Method[] methods) {
-        for (Method m : methods) {
-            if (m.isAnnotationPresent(Process.class)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private static void checkParametersForConsistency(ArrayList<RobotPlacement> robots, EnvironmentMap map, int cycles) throws SimulationParametersException {
