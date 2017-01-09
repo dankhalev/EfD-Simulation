@@ -1,11 +1,13 @@
 package com.khalev.efd.simulation;
 
+import java.util.Objects;
+
 /**
  * This class represents an action that a robot can perform in a cycle of simulation.
  */
 public class Action {
 
-    public static final double MAX_SPEED = 1.0;
+    private static final double MAX_SPEED = 1.0;
 
 
     public Type type;
@@ -34,13 +36,23 @@ public class Action {
         }
     }
 
-    public boolean isIdenticalTo(Action act) {
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
 
-        if (this.type != act.type || this.angle != act.angle || this.velocity != act.velocity
-                || this.degreeOfRealization != act.degreeOfRealization) {
+        if (!(o instanceof Action)) {
             return false;
         }
-        return true;
+        Action act = (Action) o;
+        return velocity == act.velocity &&
+                angle == act.angle &&
+                degreeOfRealization == act.degreeOfRealization &&
+                type == act.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(velocity, angle, degreeOfRealization, type);
     }
 
     public enum Type {

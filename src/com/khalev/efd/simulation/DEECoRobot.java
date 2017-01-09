@@ -6,21 +6,12 @@ package com.khalev.efd.simulation;
 public class DEECoRobot {
 
     public Integer rID;
-    public CollisionSensor sensor;
+    public SensorySystem sensor;
     public Wheels wheels;
 
     public DEECoRobot() {
-        sensor = new CollisionSensor() {
-            @Override
-            public void receiveSpatialInput(SpatialInput input) {
-
-            }
-
-            @Override
-            public boolean inputReceived(SpatialInput input) {
-                return true;
-            }
-        };
+        sensor = new SensorySystem();
+        sensor.registerSensor("collisions", new Sensor<CollisionData>());
 
         wheels = new Wheels() {
             @Override

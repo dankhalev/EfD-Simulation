@@ -3,30 +3,48 @@
     <xs:element name="simulation">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="robot" maxOccurs="unbounded">
+                <xs:element name="sensors" minOccurs="0">
                     <xs:complexType>
-                        <xs:attribute name="class" type="xs:string" use="required"/>
-                        <xs:attribute name="posX" type="xs:double" use="required"/>
-                        <xs:attribute name="posY" type="xs:double" use="required"/>
-                        <xs:attribute name="angle" type="xs:double" use="required"/>
+                        <xs:sequence>
+                            <xs:element name="sensor" maxOccurs="unbounded" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:attribute name="name" type="xs:string" use="required"/>
+                                    <xs:attribute name="processor" type="xs:string" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="robots">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="robot" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="class" type="xs:string" use="required"/>
+                                    <xs:attribute name="posX" type="xs:double" use="required"/>
+                                    <xs:attribute name="posY" type="xs:double" use="required"/>
+                                    <xs:attribute name="angle" type="xs:double" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="ensembles" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="ensemble" maxOccurs="unbounded" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:attribute name="class" type="xs:string" use="required"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
             <xs:attribute name="cycles" type="xs:integer" use="required"/>
             <xs:attribute name="logfile" type="xs:string" use="required"/>
             <xs:attribute name="bitmap" type="xs:string" use="required"/>
+            <xs:attribute name="processingTime" type="xs:integer" use="optional"/>
         </xs:complexType>
     </xs:element>
 </xs:schema>
-
-
-
-
-
-
-
-
-
-
-
-

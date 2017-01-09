@@ -3,8 +3,8 @@ package com.khalev.efd.simulation;
 /**
  * Any exception that is caused by inconsistency of simulation's initial parameters.
  */
-public class SimulationParametersException extends Exception {
-    public SimulationParametersException(String s) {
+class SimulationParametersException extends Exception {
+    SimulationParametersException(String s) {
         super(s);
     }
 

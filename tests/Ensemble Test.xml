@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<simulation cycles="500" logfile="3-1.txt" bitmap="field.bmp">
+	<sensors>
+		<sensor name="coords" processor="com.khalev.efd.robots.GlobalCoordinatesProcessor"/>
+	</sensors>
+	<robots>
+		<robot class="com.khalev.efd.robots.PredatorRobot" posX="50.0" posY="50" angle="180"/>
+		<robot class="com.khalev.efd.robots.PreyRobot" posX="50.0" posY="30" angle="180"/>
+		<robot class="com.khalev.efd.robots.PreyRobot" posX="50.0" posY="40" angle="180"/>
+		<robot class="com.khalev.efd.robots.PreyRobot" posX="40.0" posY="50" angle="180"/>
+		<robot class="com.khalev.efd.robots.PreyRobot" posX="30.0" posY="50" angle="180"/>
+		<robot class="com.khalev.efd.robots.PreyRobot" posX="50.0" posY="60" angle="180"/>
+		<robot class="com.khalev.efd.robots.PreyRobot" posX="50.0" posY="70" angle="180"/>
+		<robot class="com.khalev.efd.robots.PreyRobot" posX="60.0" posY="50" angle="180"/>
+		<robot class="com.khalev.efd.robots.PreyRobot" posX="70.0" posY="50" angle="180"/>
+	</robots>
+	<ensembles>
+		<ensemble class="com.khalev.efd.robots.SignalEnsemble"/>
+	</ensembles>
+</simulation>

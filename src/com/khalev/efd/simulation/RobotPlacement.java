@@ -6,15 +6,15 @@ package com.khalev.efd.simulation;
  */
 public class RobotPlacement {
 
-    public DEECoRobot robot;
+    DEECoRobot robot;
 
-    public Double x;
-    public Double y;
-    public Double angle;
-    public final int id;
+    Double x;
+    Double y;
+    Double angle;
+    final int id;
     private static int RID = 0;
 
-    public RobotPlacement(DEECoRobot robot, Double x, Double y, Double angle) {
+    RobotPlacement(DEECoRobot robot, Double x, Double y, Double angle) {
         this.robot = robot;
         this.x = x;
         this.y = y;
@@ -26,7 +26,7 @@ public class RobotPlacement {
         this.id = id;
     }
 
-    public RobotPlacement copy() {
+    RobotPlacement copy() {
         RobotPlacement rp = new RobotPlacement(id);
         rp.x = x;
         rp.y = y;
@@ -34,4 +34,17 @@ public class RobotPlacement {
         rp.angle = angle;
         return rp;
     }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getAngle() {
+        return angle;
+    }
+
 }

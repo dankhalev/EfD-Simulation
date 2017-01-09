@@ -2,14 +2,16 @@ package com.khalev.efd.simulation;
 
 import java.util.ArrayList;
 
+//TODO: check unchecked assignments
+//TODO: add getters instead of public fields
 public class EnvironmentMap {
 
-    ArrayList<Line>[] vertical;
-    ArrayList<Line>[] horizontal;
-    int sizeX;
-    int sizeY;
+    public ArrayList<Line>[] vertical;
+    public ArrayList<Line>[] horizontal;
+    public int sizeX;
+    public int sizeY;
 
-    public EnvironmentMap(int sizeX, int sizeY) {
+    EnvironmentMap(int sizeX, int sizeY) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         vertical = new ArrayList[sizeX+1];

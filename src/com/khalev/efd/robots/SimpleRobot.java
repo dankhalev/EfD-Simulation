@@ -12,7 +12,6 @@ import cz.cuni.mff.d3s.deeco.task.ParamHolder;
 public class SimpleRobot extends DEECoRobot {
 
     public SimpleRobot() {
-        sensor = new SimpleCollisionSensor();
         wheels = new SimpleWheels();
     }
 
@@ -21,9 +20,11 @@ public class SimpleRobot extends DEECoRobot {
     public static void decisionProcess(
             @In("rID") Integer rid,
             @InOut("wheels") ParamHolder<SimpleWheels> wheels,
-            @In("sensor") SimpleCollisionSensor sensor
+            @In("sensor") SensorySystem sensor
     ) {
-        if (!sensor.input.collisionPoints.isEmpty() && sensor.input.action.type != Action.Type.ROTATE) {
+        Object o = sensor.getInputFromSensor("collisions");
+        CollisionData input = (o instanceof CollisionData ? (CollisionData) o : null);
+        if (input != null && !input.collisionPoints.isEmpty() && input.action.type != Action.Type.ROTATE) {
             wheels.value.speed = 0.0;
             wheels.value.rotationAngle = Math.PI;
         } else {

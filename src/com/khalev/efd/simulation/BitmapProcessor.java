@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class BitmapProcessor {
+class BitmapProcessor {
 
     BufferedImage img;
     private int sizeX;

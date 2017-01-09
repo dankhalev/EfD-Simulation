@@ -2,13 +2,13 @@ package com.khalev.efd.simulation;
 
 import java.util.ArrayList;
 
-public abstract class SensoryInputsProcessor {
+public abstract class SensoryInputsProcessor<T> {
 
-    EnvironmentMap environmentMap;
+    private EnvironmentMap environmentMap;
 
     public SensoryInputsProcessor(EnvironmentMap map) {
         this.environmentMap = map;
     }
 
-    abstract Object sendInputs(ArrayList<RobotPlacement> robots);
+    protected abstract ArrayList<T> sendInputs(ArrayList<RobotPlacement> robots);
 }

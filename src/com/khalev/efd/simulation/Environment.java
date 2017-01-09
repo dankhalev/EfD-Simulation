@@ -1,6 +1,7 @@
 package com.khalev.efd.simulation;
 
 import cz.cuni.mff.d3s.deeco.runtime.RuntimeFramework;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -8,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.*;
 
+//TODO: Separate logging from Environment. Consider writing logfile & runtime logs in separate objects.
+//TODO: Remove old-style ArrayList<CollisionData> inputs from Environment, Coordinator & InputEnsemble
+//TODO: Add protection from external sensors changing positions of robots
 /**
  * This class is used for computing cycles of the simulation and for writing logs.
  */
@@ -22,7 +26,10 @@ public class Environment {
     private ArrayList<RobotPlacement> robots;
     private ArrayList<RobotPlacement> previousPositions;
     private ArrayList<Action> actions = new ArrayList<>();
-    private ArrayList<SpatialInput> inputs = new ArrayList<>();
+    private ArrayList<CollisionData> inputs = new ArrayList<>();
+
+    private ArrayList<ArrayList> allInputs;
+    private ArrayList<SensoryInputsProcessor> sensors;
 
     private int step;
     private int previousStep = -1;
@@ -34,19 +41,25 @@ public class Environment {
     public static Environment getInstance() {
         return instance;
     }
-    public static void setInstance(Environment e) {
+    static void setInstance(Environment e) {
         instance = e;
     }
 
-    public Environment(int numOfSteps, ArrayList<RobotPlacement> robots, File logs, EnvironmentMap map, String bitmap) {
-        STEPS = numOfSteps;
+    Environment(int numOfSteps, ArrayList<RobotPlacement> robots, File logs, EnvironmentMap map, String bitmap,
+                ArrayList<SensoryInputsProcessor> sensors) {
         try {
+            STEPS = numOfSteps;
             this.environmentMap = map;
             this.robots = robots;
             this.computer = new SimulationEngine(robots, map);
+
+            this.sensors = new ArrayList<>();
+            this.sensors.add(this.computer);
+            this.sensors.addAll(sensors);
+            this.allInputs = new ArrayList<>(sensors.size());
+
             this.logfile = new FileWriter(logs);
             logfile.write(bitmap + "\n");
-
             for ( int i = 0; i < robots.size(); i++) {
                 robots.get(i).robot.rID = i;
             }
@@ -55,7 +68,7 @@ public class Environment {
         }
     }
 
-    public void setRuntime(RuntimeFramework runtime) {
+    void setRuntime(RuntimeFramework runtime) {
         configureLogger();
         this.runtime = runtime;
     }
@@ -85,23 +98,27 @@ public class Environment {
         startTime = System.nanoTime();
     }
 
-    public void updateActions(Action[] acts) {
+    void updateActions(Action[] acts) {
         actions.clear();
         assert acts.length == robots.size(): "Received Action[] array has wrong size";
         Collections.addAll(actions, acts);
     }
 
-    public SpatialInput[] returnInputs() {
+    CollisionData[] returnInputs() {
         assert inputs.size() == robots.size(): "Number of robots and number of inputs are not the same";
-        SpatialInput[] sis = new SpatialInput[inputs.size()];
+        CollisionData[] sis = new CollisionData[inputs.size()];
         for (int i = 0; i < sis.length; i++) {
             sis[i] = inputs.get(i);
         }
         return sis;
     }
 
+    ArrayList<ArrayList> getAllInputs() {
+        return allInputs;
+    }
+
     //TODO: find better way to exit the program
-    public int cycle() {
+    int cycle() {
         try {
             writeLogs();
             logger.info("CYCLE " + step);
@@ -111,7 +128,13 @@ public class Environment {
             if (!endCondition()) {
                 previousPositions = robots;
                 robots = computer.performActions(actions);
-                inputs = computer.sendInputs(robots);
+                allInputs.clear();
+                for (SensoryInputsProcessor sip : sensors) {
+                    allInputs.add(sip.sendInputs(robots));
+                }
+                @SuppressWarnings("unchecked")
+                ArrayList<CollisionData> list = allInputs.get(0);
+                inputs = list;
                 if (step > 0)
                     writeRobotLogs();
                 step++;
@@ -140,7 +163,7 @@ public class Environment {
             RobotPlacement r = robots.get(i);
             RobotPlacement rp = previousPositions.get(i);
             Action act = actions.get(i);
-            SpatialInput in = inputs.get(i);
+            CollisionData in = inputs.get(i);
 
             s += ("Robot #" + rp.id + " had coordinates " + rp.x + ", " + rp.y + ";\n");
             if (act.type == Action.Type.MOVE) {
@@ -178,4 +201,6 @@ public class Environment {
     private boolean endCondition() {
         return step >= STEPS;
     }
+
+
 }

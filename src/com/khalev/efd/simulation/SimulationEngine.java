@@ -1,13 +1,14 @@
 package com.khalev.efd.simulation;
 
 import javafx.util.Pair;
+
 import java.util.ArrayList;
 
 import static java.lang.Double.NaN;
 
 //TODO: review ST_ERR method
 //TODO: make a proof that computations work correctly
-class SimulationEngine extends SensoryInputsProcessor {
+class SimulationEngine extends SensoryInputsProcessor<CollisionData> {
 
     private ArrayList<RobotPlacement> robots;
     private EnvironmentMap environmentMap;
@@ -20,7 +21,7 @@ class SimulationEngine extends SensoryInputsProcessor {
     private static final double DOUBLE_RADIUS_SQUARED = (2 * ROBOT_RADIUS) * (2 * ROBOT_RADIUS);
 
 
-    public SimulationEngine(ArrayList<RobotPlacement> robots, EnvironmentMap map) {
+    SimulationEngine(ArrayList<RobotPlacement> robots, EnvironmentMap map) {
         super(map);
         this.environmentMap = map;
         this.collisionList = new CollisionList(robots.size());
@@ -141,12 +142,13 @@ class SimulationEngine extends SensoryInputsProcessor {
         return this.robots;
     }
 
-    ArrayList<SpatialInput> sendInputs(ArrayList<RobotPlacement> robots) {
+
+    protected ArrayList<CollisionData> sendInputs(ArrayList<RobotPlacement> robots) {
         assert actions.size() == robots.size(): "Actions were not updated";
-        ArrayList<SpatialInput> inputs = new ArrayList<>();
+        ArrayList<CollisionData> inputs = new ArrayList<>();
 
         for (int i = 0; i < robots.size(); i++) {
-            inputs.add(new SpatialInput(actions.get(i)));
+            inputs.add(new CollisionData(actions.get(i)));
         }
 
         collisionList.computeCollisionsWithWalls(robots, inputs);
